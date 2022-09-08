@@ -1,4 +1,11 @@
-import mongoose from 'mongoose'
+import mongoose, { LeanDocument, ObjectId} from 'mongoose'
+
+export type Doc = LeanDocument<mongoose.Document & {
+    _id: string| ObjectId
+    createdAt: string | Date
+    updatedAt: string | Date
+}>
+
 
 // redyState {
 //     disconnected: 0,
@@ -68,10 +75,10 @@ class DB {
         }
     }
 
-    convertDocToObj(doc: any) {
-        doc._id = doc._id.toString()
-        doc.createdAt = doc.createdAt.toString()
-        doc.updatedAt = doc.updatedAt.toString()
+    convertDocToObj(doc: Doc) {
+        doc._id = String(doc._id)
+        doc.createdAt = String(doc.createdAt)
+        doc.updatedAt = String(doc.updatedAt)
         return doc
     }
 }

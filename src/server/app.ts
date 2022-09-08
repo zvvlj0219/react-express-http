@@ -6,17 +6,18 @@ import cors from 'cors'
 import helmet from 'helmet'
 import morgan from 'morgan'
 import compression from 'compression'
+import { corsOptions } from './config/index'
 
 class App {
     public app: Application
     public port: number
-    public baseUrl: string
+    public apiRoute: string
     public db = DB
 
-    constructor(controllers: Controller[], port: number, baseUrl: string) {
+    constructor(controllers: Controller[], port: number, apiRoute: string) {
         this.app = express()
         this.port = port
-        this.baseUrl = baseUrl
+        this.apiRoute = apiRoute
 
         this.initializeControllers(controllers)
         this.initializeMiddleware()
@@ -24,13 +25,13 @@ class App {
 
     private initializeControllers(controllers: Controller[]): void {
         controllers.forEach((controller: Controller) => {
-            this.app.use(this.baseUrl, controller.router)
+            this.app.use(this.apiRoute, controller.router)
         })
     }
 
     private initializeMiddleware(): void {
         this.app.use(helmet())
-        this.app.use(cors())
+        this.app.use(cors(corsOptions))
         this.app.use(morgan('dev'))
         this.app.use(express.json())
         this.app.use(express.urlencoded({ extended: false }))
