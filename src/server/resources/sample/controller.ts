@@ -1,6 +1,7 @@
 import { Router, Request, Response, NextFunction } from 'express'
 import Controller from '../../types/controller.interface'
-import DB from '../../utils/db'
+import DB, { Doc } from '../../utils/db'
+import customerSchema from '../../models/Customers'
 
 /*
  * post controller
@@ -9,7 +10,7 @@ import DB from '../../utils/db'
  */
 
 class sampleController implements Controller {
-    public path = '/sample'
+    public path = '/sample/customers'
     public router = Router()
     public db = DB
 
@@ -18,10 +19,18 @@ class sampleController implements Controller {
     }
 
     private initialiseRoutes(): void {
-        this.router.get(this.path, (req: Request, res: Response) => {
+        this.router.get(this.path, async (req: Request, res: Response) => {
             this.db.connect()
+            const customers = await customerSchema.find().limit(10).lean() as Doc[]
             this.db.disconnect()
-            return res.status(200).json({ msg: 'hello world' })
+
+            return res.status(200).json({
+                result: customers
+                ? customers.map((doc) => {
+                    return this.db.convertDocToObj(doc)
+                })
+                : []
+            })
         })
     }
 }

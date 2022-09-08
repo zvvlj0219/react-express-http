@@ -32,7 +32,13 @@
         }
     },
     "rules": {
-        "react/react-in-jsx-scope": "off"
+        "react/react-in-jsx-scope": "off",
+        "@typescript-eslint/no-empty-interface": [
+            "error",
+            {
+              "allowSingleExtends": false
+            }
+        ]
         // "no-use-before-define": "off",
         // "linebreak-style": ["error", "windows"],
         // "react/jsx-filename-extension": [
