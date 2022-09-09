@@ -6,14 +6,15 @@ export type Doc = LeanDocument<mongoose.Document & {
     updatedAt: string | Date
 }>
 
-
-// redyState {
-//     disconnected: 0,
-//     connected: 1,
-//     connecting: 2,
-//     disconnecting: 3,
-//     uninitialized: 99,
-// }
+/*
+* redyState {
+*     disconnected: 0,
+*     connected: 1,
+*     connecting: 2,
+*     disconnecting: 3,
+*     uninitialized: 99,
+* }
+*/
 
 interface Connection {
     isConnected: number
@@ -22,17 +23,17 @@ interface Connection {
 class DB {
     private connection: Connection
 
-    constructor() {
+    public constructor() {
         this.connection = {
             isConnected: 0
         }
     }
 
-    readyStateLogger() {
+    private readyStateLogger() {
         console.log(`DB current readyState = ${this.connection.isConnected}`)
     }
 
-    async connect() {
+    public async connect() {
         if (!process.env.MONGODB_URI) {
             console.log('mongo db uri not found')
             return
@@ -61,7 +62,7 @@ class DB {
         this.readyStateLogger()
     }
 
-    async disconnect() {
+    public async disconnect() {
         if (
             this.connection.isConnected &&
             process.env.NODE_ENV === 'production'
@@ -75,7 +76,7 @@ class DB {
         }
     }
 
-    convertDocToObj(doc: Doc) {
+    public convertDocToObj(doc: Doc) {
         doc._id = String(doc._id)
         doc.createdAt = String(doc.createdAt)
         doc.updatedAt = String(doc.updatedAt)
