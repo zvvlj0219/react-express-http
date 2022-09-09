@@ -1,12 +1,16 @@
 import dotenv from 'dotenv'
 import App from './app'
 import Controller from './types/controller.interface'
-import sampleController from './resources/sample/controller'
+import CustomersController from './resources/sample/customers.controller'
+import DummyApiController from './resources/sample/dumyApi.controller'
 import { apiRoute } from './config/index'
 
 dotenv.config()
 
-const controllers: Controller[] = [new sampleController()]
+const controllers: Controller[] = [
+    new CustomersController(),
+    new DummyApiController()
+]
 
 const port = Number(process.env.PORT || 5000)
 

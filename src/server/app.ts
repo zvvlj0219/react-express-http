@@ -6,6 +6,7 @@ import cors from 'cors'
 import helmet from 'helmet'
 import morgan from 'morgan'
 import compression from 'compression'
+import errorHandler from './middleware/errorHandler'
 import { corsOptions } from './config/index'
 
 class App {
@@ -36,6 +37,7 @@ class App {
         this.app.use(express.json())
         this.app.use(express.urlencoded({ extended: false }))
         this.app.use(compression())
+        this.app.use(errorHandler)
     }
 
     public listen(): void {
