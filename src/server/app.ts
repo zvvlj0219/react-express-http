@@ -20,24 +20,21 @@ class App {
         this.port = port
         this.apiRoute = apiRoute
 
+        this.app.use(helmet())
+        this.app.use(cors(corsOptions))
+        this.app.use(morgan('dev'))
+        this.app.use(express.json())
+        this.app.use(express.urlencoded({ extended: true }))
+        this.app.use(compression())
+        this.app.use(errorHandler)
+
         this.initializeControllers(controllers)
-        this.initializeMiddleware()
     }
 
     private initializeControllers(controllers: Controller[]): void {
         controllers.forEach((controller: Controller) => {
             this.app.use(this.apiRoute, controller.router)
         })
-    }
-
-    private initializeMiddleware(): void {
-        this.app.use(helmet())
-        this.app.use(cors(corsOptions))
-        this.app.use(morgan('dev'))
-        this.app.use(express.json())
-        this.app.use(express.urlencoded({ extended: false }))
-        this.app.use(compression())
-        this.app.use(errorHandler)
     }
 
     public listen(): void {

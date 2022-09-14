@@ -35,9 +35,9 @@ class CustomersController implements Controller {
                     : []
                 this.db.disconnect()
 
-                res.setHeader(
-                    'Access-Control-Allow-Origin', 'http://localhost:3000'
-                )
+                // res.setHeader(
+                //     'Access-Control-Allow-Origin', 'http://localhost:3000'
+                // )
     
                 return res.status(200).json({ result })
             } catch (error) {
